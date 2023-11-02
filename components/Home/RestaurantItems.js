@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -41,25 +41,51 @@ export const localRestaurants = [
   },
 ];
 
-export default function RestaurantItems({ navigation, ...props }) {
+const [stores, setStores] =useState([]);
+
+
+
+const fetchStores = async() => {
+  try {
+    const api ="https://wigomarket-backend-api-8a20a7c8ce69.herokuapp.com"
+const config ={
+headers:{
+  "Content-type":"application/json",
+  "Access-Control-Allow-Origin": "*",
+},
+};
+
+const {data} = await axios.post(`${api}/api/store/all`,config);
+setStores(data);
+
+} catch (error) {
+throw new Error(error);
+}
+};
+
+useEffect(() =>{
+  fetchStores();
+}, []);
+
+export default function StoreItems({ navigation, ...props }) {
   return (
    
-        <TouchableOpacity
+        <TouchableOpacity 
            activeOpacity={1} style={{ marginBottom: 30 }}>
-          {props.RestaurantData.map((restaurant, index) => (
+          {props.StoreData.map((store, index) => (
              <View
              key={index}
              style={{ marginTop: 10, padding: 15, backgroundColor: "white" }}
            >
-             <RestaurantImage image={restaurant.image_url} />
-             <RestaurantInfo name={restaurant.name} rating={restaurant.rating} />
+             <RestaurantImage image={store.image} />
+             <RestaurantInfo name={store.name} rating={store.rating} />
            </View>
           ))}
           </TouchableOpacity>
   );
 }
 
-const RestaurantImage = (props) => (
+const StoreImage = (props) => (
   <>
     <Image
       source={{
@@ -73,7 +99,7 @@ const RestaurantImage = (props) => (
   </>
 );
 
-const RestaurantInfo = (props) => (
+const StoreInfo = (props) => (
   <View
     style={{
       flexDirection: "row",

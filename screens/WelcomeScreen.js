@@ -6,7 +6,7 @@ const WelcomeScreen = ({ navigation }) => {
     // Simulate a delay for the welcome/loading screen
     const timer = setTimeout(() => {
       navigation.replace('Login');
-    }, 20000); // 20 seconds
+    }, 5000); // 20 seconds
 
     return () => clearTimeout(timer);
   }, []);

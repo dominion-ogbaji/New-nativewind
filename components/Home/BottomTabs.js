@@ -1,39 +1,64 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React from 'react'
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { AntDesign, Ionicons, MaterialIcons } from 'react-native-vector-icons';
 
+import Screen1 from '../../screens/Home'; // Import your screen components
+import Screen2 from '../../screens/RestaurantDetail';
+import Screen3 from '../../screens/Home';
+import Screen4 from '../../screens/Home';
 
-export default function BottomTabs() {
+const Tab = createBottomTabNavigator();
+
+const BottomTabNavigator = () => {
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        margin: 10,
-        marginHorizontal: 30,
-        justifyContent: "space-between",
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: '#007AFF', // Active tab text and icon color
+        inactiveTintColor: 'gray',  // Inactive tab text and icon color
       }}
     >
-     <Icon icon="home" text="Home" />
-      <Icon icon="search" text="Browse" />
-      <Icon icon="shopping-bag" text="Grocery" />
-      <Icon icon="receipt" text="Orders" />
-      <Icon icon="user" text="Account" />
-    </View>
-  );
-}
-const Icon = (props) => (
-  <TouchableOpacity>
-    <View>
-      <FontAwesome5
-        name={props.icon}
-        size={20}
-        style={{
-          marginBottom: 3,
-          alignSelf: "center",
+      <Tab.Screen
+        name="Screen1"
+        component={Screen1}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="home" color={color} size={size} />
+          ),
         }}
       />
-      <Text>{props.text}</Text>
-    </View>
-  </TouchableOpacity>
-);
+      <Tab.Screen
+        name="Screen2"
+        component={Screen2}
+        options={{
+          tabBarLabel: 'Search',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Screen3"
+        component={Screen3}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Screen4"
+        component={Screen4}
+        options={{
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="setting" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
+export default BottomTabNavigator;

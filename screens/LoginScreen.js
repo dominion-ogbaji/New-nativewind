@@ -1,18 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+const [email, setEmail] = useState();
+const [password, setPassword] = useState();
 
 const LoginScreen = ({ navigation }) => {
-    const handleLogin = () => {
-      // Perform any necessary login logic here
-      // For this example, we'll just navigate to the "Home" screen
-      navigation.navigate('Home')
+    const handleLogin = async() => {
+        try {
+         const api ="https://wigomarket-backend-api-8a20a7c8ce69.herokuapp.com"
+   const config ={
+     headers:{
+       "Content-type":"application/json",
+       "Access-Control-Allow-Origin": "*",
+     },
+   };
+   
+const {data} = await axios.post(`${api}/api/user/login`,{ password:password, email:email},config).then(()=>{
+  navigation.navigate('Home');
+});
+
+ } catch (error) {
+ throw new Error(error);
+ }
     };
 
-    const handleSignup = () => {
-        // Perform any necessary login logic here
-        // For this example, we'll just navigate to the "Home" screen
-        navigation.navigate('Signup')
-      };
+    const handleForgotPassword = async() =>{
+      try {
+        const api ="https://wigomarket-backend-api-8a20a7c8ce69.herokuapp.com"
+  const config ={
+    headers:{
+      "Content-type":"application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
+  
+const {data} = await axios.post(`${api}/api/user/forgot-password-token`,{email:email},config);
+
+} catch (error) {
+throw new Error(error);
+}
+
+    };
+
+    // const handleSignup = () => {
+    //     // Perform any necessary login logic here
+    //     // For this example, we'll just navigate to the "Home" screen
+    //     navigation.navigate('Signup')
+    //   };
    
   return (
     <View style={styles.container}>
@@ -23,16 +56,18 @@ const LoginScreen = ({ navigation }) => {
         style={styles.input}
         keyboardType="email-address"
         autoCapitalize="none"
+        onChange={(e) => setEmail(e.nativeEvent.text)}
       />
 
       <TextInput
         placeholder="Password"
         style={styles.input}
         secureTextEntry
+        onChange={(e) => setPassword(e.nativeEvent.text)}
       />
 
-      <TouchableOpacity style={styles.forgotPassword}>
-        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+      <TouchableOpacity style={styles.forgotPassword} onPress={handleForgotPassword}>
+        <Text style={styles.forgotPasswordText} >Forgot Password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
@@ -41,7 +76,7 @@ const LoginScreen = ({ navigation }) => {
 
       <View style={styles.signupLinkContainer}>
         <Text style={styles.signupLinkText}>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Signup') }>
           <Text style={[styles.signupLinkText2, styles.signupLinkClickable]}>Sign up</Text>
         </TouchableOpacity>
       </View>

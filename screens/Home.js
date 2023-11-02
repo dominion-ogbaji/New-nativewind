@@ -14,15 +14,16 @@ export default function Home() {
 
 
 
+
   return (
-    <SafeAreaView style={{ backgroundColor: "#eee", flex: 0, paddingBottom:243 }} >
+    <SafeAreaView style={{ backgroundColor: "#eee", flex: 0, paddingBottom:244 }} >
       <View style={{ backgroundColor: "white", padding: 15, marginTop:40, paddingBottom: 15 }}>
         <HeaderTabs/>
         <SearchBar />
       </View>
       <ScrollView  showsVerticalScrollIndicator>
         <Categories/>
-        <RestaurantItems RestaurantData = {restaurantData} />
+        <RestaurantItems RestaurantData = {stores} />
       </ScrollView>
       <Divider width={1} />
       <BottomTabs />

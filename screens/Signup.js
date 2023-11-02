@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import axios from 'axios';
+import { Button } from 'react-native-elements';
 
 const SignupScreen = ({ navigation }) => {
+  const [firstname, setFirstname] = useState();
+  const [lastname, setLastname] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [mobile, setMobile]=useState();
+
+
+  // const submitHandler = async() => {
+  
+  // };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.signup}>Signup</Text>
+      <Text style={styles.signup}>Create An Account</Text>
 
       <TextInput
         placeholder="First Name"
         style={styles.input}
+        onChange={(e) => {
+          setFirstname(e.nativeEvent.text)}}
       />
 
       <TextInput
         placeholder="Last Name"
         style={styles.input}
+        onChange={(e) => setLastname(e.nativeEvent.text)}
       />
 
       <TextInput
@@ -22,22 +38,43 @@ const SignupScreen = ({ navigation }) => {
         style={styles.input}
         keyboardType="email-address"
         autoCapitalize="none"
+        onChange={(e) => setEmail(e.nativeEvent.text)}
       />
 
       <TextInput
         placeholder="Password"
         style={styles.input}
         secureTextEntry
+        onChange={(e) => setPassword(e.nativeEvent.text)}
       />
 
       <TextInput
-        placeholder="Confirm Password"
+        placeholder="Mobile mobile"
         style={styles.input}
-        secureTextEntry
+        onChange={(e) => setMobile(e.nativeEvent.text)}
+       
       />
 
       <TouchableOpacity style={styles.signupButton}>
-        <Text style={styles.signupButtonText}>Sign Up</Text>
+        <Button style={styles.signupButtonText} onPress={async()=>{ 
+           try {
+            const api ="https://wigomarket-backend-api-8a20a7c8ce69.herokuapp.com"
+      const config ={
+        headers:{
+          "Content-type":"application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      };
+      
+ const {data} = await axios.post(`${api}/api/user/register`,{firstname: firstname, lastname: lastname, password:password, email:email, mobile:mobile},config).then(()=>{
+
+});
+
+    } catch (error) {
+    throw new Error(error);
+    }
+    
+  } }>Sign Up</Button>
       </TouchableOpacity>
 
       <Text style={styles.orText}>Sign up with</Text>
@@ -56,7 +93,16 @@ const SignupScreen = ({ navigation }) => {
 
       <View style={styles.signupLinkContainer}>
         <Text style={styles.signupLinkText}>Already have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => {
+            try {
+            
+              navigation.navigate('Login')
+            } catch (error) {
+              
+            }
+        }
+        
+          }>
           <Text style={[styles.signinLinkText2, styles.signinLinkClickable]}>Sign in</Text>
         </TouchableOpacity>
       </View>
@@ -70,11 +116,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
-    paddingTop: 120,
+    paddingTop: 70,
   },
   signup: {
     fontSize: 20,
-    marginBottom: 30,
+    marginBottom: 20,
   },
   input: {
     width: '80%',
